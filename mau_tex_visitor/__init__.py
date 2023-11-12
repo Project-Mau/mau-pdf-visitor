@@ -9,6 +9,7 @@ DEFAULT_TEMPLATES = {
     "inline_image.tex": r"\includegraphics{ {{-uri-}} } ",
     "link.tex": r"\href{ {{-target-}} }{ {{-text-}} }",
     "macro.tex": "",
+    "raw.html": "{{ value }}",
     "sentence.tex": "{{ content }}",
     "star.tex": r"\textbf{ {{-content-}} }",
     "text.tex": "{{ value }}",
@@ -45,7 +46,6 @@ DEFAULT_TEMPLATES = {
         "\n\n"
     ),
     "paragraph.tex": "{{ content }}\n\n\n",
-    "raw.tex": "{{ content }}",
     ########################################
     "list_item.tex": (r"\item {{ content }}" "\n\n"),
     "list.tex": (
