@@ -1,76 +1,21 @@
 import re
+import sys
+from importlib.resources import files
 
-from mau.visitors.jinja_visitor import JinjaVisitor
+from mau.environment.environment import Environment
+from mau.visitors.jinja_visitor import JinjaVisitor, load_templates_from_path
 
+templates = load_templates_from_path(files("templates"))
 
-DEFAULT_TEMPLATES = {
-    "caret.tex": r"\textsuperscript{ {{-content-}} }",
-    "class.tex": "{{content}}",
-    "inline_image.tex": r"\includegraphics{ {{-uri-}} } ",
-    "link.tex": r"\href{ {{-target-}} }{ {{-text-}} }",
-    "macro.tex": "",
-    "raw.html": "{{ value }}",
-    "sentence.tex": "{{ content }}",
-    "star.tex": r"\textbf{ {{-content-}} }",
-    "text.tex": "{{ value }}",
-    "tilde.tex": r"\textsubscript{ {{-content-}} }",
-    "underscore.tex": r"\textit{ {{-content-}} }",
-    "verbatim.tex": r"\texttt{ {{-value-}} }",
-    ########################################
-    "block-admonition.tex": (
-        "{{ kwargs.class }} - {{ kwargs.label }}\n\n" "{{ content }}\n"
-    ),
-    "block.tex": "{{ content }}\n",
-    "block-quote.tex": "{{ content }}\n{{ secondary_content }}\n",
-    ########################################
-    "source.tex": "{% for line, _ in code %}{{ line }}\n{% endfor %}",
-    "callouts_entry.tex": "",
-    "callout.tex": "",
-    ########################################
-    "command.tex": "",
-    "container.tex": "{{ content }}",
-    "document.tex": "{{ content }}",
-    "header.tex": (r"\{{command}}{ {{-value-}} }" "\n\n"),
-    "horizontal_rule.tex": (r"\rule{\textwidth}{0.5pt}" "\n\n"),
-    "content.html": "",
-    "content_image.tex": (
-        r"\begin{figure}[h]"
-        "\n"
-        r"{% if title %}\caption{ {{-title-}} }{% endif %}"
-        "\n"
-        r"\centering"
-        "\n"
-        r"\includegraphics[width=\textwidth]{ {{-uri-}} }"
-        "\n"
-        r"\end{figure}"
-        "\n\n"
-    ),
-    "paragraph.tex": "{{ content }}\n\n\n",
-    ########################################
-    "list_item.tex": (r"\item {{ content }}" "\n\n"),
-    "list.tex": (
-        "{% if not main_node %}\n{% endif %}"
-        r"{% if ordered %}\begin{enumerate}{% else %}\begin{itemize}{% endif %}"
-        "\n"
-        "{{ items }}"
-        r"{% if ordered %}\end{enumerate}{% else %}\end{itemize}{% endif %}"
-        "{% if main_node %}\n\n{% endif %}"
-    ),
-    ########################################
-    "toc_entry.tex": "",
-    "toc.tex": "",
-    ########################################
-    "footnote.tex": r"\footnote{ {{-content-}} }",
-    "footnotes_entry.tex": "",
-    "footnotes.tex": "",
-}
+DEFAULT_TEMPLATES = {}
 
 
 class TexVisitor(JinjaVisitor):
     format_code = "tex"
     extension = "tex"
 
-    default_templates = DEFAULT_TEMPLATES
+    default_templates = Environment(templates)
+    default_templates.update(DEFAULT_TEMPLATES)
 
     def _escape_text(self, text):
         conv = {
