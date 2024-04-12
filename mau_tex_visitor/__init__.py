@@ -1,11 +1,10 @@
 import re
-import sys
 from importlib.resources import files
 
 from mau.environment.environment import Environment
 from mau.visitors.jinja_visitor import JinjaVisitor, load_templates_from_path
 
-templates = load_templates_from_path(files("templates"))
+templates = load_templates_from_path(files(__package__).joinpath("templates"))
 
 DEFAULT_TEMPLATES = {}
 
