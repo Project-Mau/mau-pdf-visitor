@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 2.0.1
+=============
+
+- [fix] Fixed line numbering. TeX highlighting packages consider the first line as number 1.
+
 Version 2.0.0
 =============
 

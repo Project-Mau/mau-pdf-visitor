@@ -56,6 +56,10 @@ class TexVisitor(JinjaVisitor):
         return base
 
     def _visit_source__default(self, node, *args, **kwargs):
+        # Highlighers like the package Minted
+        # consider the first line as number 1
+        node.highlights = [i + 1 for i in node.highlights]
+
         base = super()._visit_source__default(node, *args, escape=False, **kwargs)
         return base
 
